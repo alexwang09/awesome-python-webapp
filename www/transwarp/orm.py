@@ -108,6 +108,7 @@ class StringField(Field):
     保存String类型字段的属性
     """
     def __init__(self, **kw):
+        #logging.info('this is class of StringField')
         if not 'default' in kw:
             kw['default'] = ''
         if not 'ddl' in kw:
@@ -119,6 +120,7 @@ class IntegerField(Field):
     保存Integer类型字段的属性
     """
     def __init__(self, **kw):
+        #logging.info('this is class of IntegerField')
         if not 'default' in kw:
             kw['default'] = 0
         if not 'ddl' in kw:
@@ -130,6 +132,7 @@ class FloatField(Field):
     保存Float类型字段的属性
     """
     def __init__(self, **kw):
+        #logging.info('this is class of FloatField')
         if not 'default' in kw:
             kw['default'] = 0.0
         if not 'ddl' in kw:
@@ -224,7 +227,7 @@ class ModelMetaclass(type):
         else:
             logging.warning('Redefine class: %s' % name)
 
-        logging.info('Scan ORMapping %s...' % name)
+        logging.info('Scan ORMapping %s....' % name)
         mappings = dict()
         primary_key = None
 
@@ -250,9 +253,10 @@ class ModelMetaclass(type):
         if not primary_key:
             raise TypeError('primary key not defined in class: %s' % name)
         for k in mappings.iterkeys():
-            attrs.pop(k)
+            attrs.pop(k)    #从类属性中删除该Field属性，否则，容易造成运行时错误；
         if not '__table__' in attrs:
             attrs['__table__'] = name.lower()
+            #logging.info('__table__is %s' % attrs['__table__'])
 
         attrs['__mappings__'] = mappings
         attrs['__primary_key__'] = primary_key
@@ -321,6 +325,7 @@ class Model(dict):
     __metaclass__ = ModelMetaclass
 
     def __init__(self, **kw):
+        #logging.info('this is class of Model')
         super(Model, self).__init__(**kw)
 
     def __getattr__(self, key):
@@ -422,6 +427,9 @@ class Model(dict):
             if v.insertable:
                 if not hasattr(self, k):
                     setattr(self, k, v.default)
+                '''
+                因为Model类有__getattr__方法，所以可以使用getattr获取属性值
+                '''
                 params[v.name] = getattr(self, k)
         db.insert('%s' % self.__table__, **params)
         return self
