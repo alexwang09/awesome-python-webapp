@@ -1644,6 +1644,7 @@ class WSGIApplication(object):
         return wsgi
 
 if __name__=='__main__':
+    logging.basicConfig(level=logging.DEBUG)
     sys.path.append('.')
     import doctest
     doctest.testmod()
