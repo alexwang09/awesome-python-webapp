@@ -9,7 +9,7 @@ from transwarp import db
 
 if __name__ == '__main__':
     print User().__sql__()
-    db.create_engine('root', 'wxy6772102', 'test')
+    db.create_engine('root', 'wxy6772102', 'awesome')
     db.update('drop table if exists users')
     db.update('drop table if exists blogs')
     db.update('drop table if exists comments')
