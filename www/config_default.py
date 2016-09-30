@@ -10,10 +10,11 @@ Default configurations.
 
 configs = {
     'db': {
+        'user': 'root',
+        'password': 'wxy6772102',
+        'database': 'awesome',
         'host': '127.0.0.1',
         'port': 3306,
-        'password': 'wxy6772102',
-        'database': 'awesome'
     },
     'session': {
         'secert': 'AwEsOmE'

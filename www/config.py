@@ -47,14 +47,12 @@ def toDict(d):
         D[k] = toDict(v) if isinstance(v, dict) else v
     return D
 
-if __name__=='__main__':
-    logging.basicConfig(level=logging.DEBUG)
-    configs = config_default.configs
-    try:
-        import config_override
-        configs = merge(configs, config_override.configs)
-    except ImportError:
-        pass
 
-    configs = toDict(configs)
-    logging.info("%s" % configs)
+configs = config_default.configs
+try:
+    import config_override
+    configs = merge(configs, config_override.configs)
+except ImportError:
+    pass
+
+configs = toDict(configs)
