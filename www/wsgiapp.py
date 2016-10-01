@@ -14,7 +14,6 @@ from config import configs
 # 初始化数据库
 db.create_engine(**configs.db)
 
-# os.path.dirname(os.path.abspath(__file__)) 获取文件当前路径
 wsgi = WSGIApplication(os.path.dirname(os.path.abspath(__file__)))
 # os.path.abspath(__file__) 文件的绝对路径
 # os.path.dirname(os.path.abspath(__file__)) 文件的父路径

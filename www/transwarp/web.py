@@ -1303,6 +1303,7 @@ class Jinja2TemplateEngine(TemplateEngine):
             kw['autoescape'] = True
         self._env = Environment(loader=FileSystemLoader(templ_dir), **kw)
 
+    #添加管道处理函数
     def add_filter(self, name, fn_filter):
         self._env.filters[name] = fn_filter
 
@@ -1505,7 +1506,7 @@ class WSGIApplication(object):
         self._post_static = {}
 
         self._get_dynamic = []
-        self._psot_dynamic = []
+        self._post_dynamic = []
 
     def _check_not_running(self):
         if self._running:
@@ -1530,6 +1531,7 @@ class WSGIApplication(object):
         for name in dir(m):
             fn = getattr(m, name)
             if callable(fn) and hasattr(fn, '__web_route__') and hasattr(fn, '__web_method__'):
+                #logging.info('%s' % fn)
                 self.add_url(fn)
 
     def add_url(self, func):
@@ -1607,7 +1609,9 @@ class WSGIApplication(object):
             try:
                 r = fn_exec()
                 if isinstance(r, Template):
+                    #logging.info('============%s' % r.template_name)
                     r = self._template_engine(r.template_name, r.model)
+                    #logging.info('=========%s' % r.model)
                 if isinstance(r, unicode):
                     r = r.encode('utf-8')
                 if r is None:
