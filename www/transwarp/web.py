@@ -946,6 +946,7 @@ class Request(object):
         if not hasattr(self, '_cookies'):
             cookies = {}
             cookie_str = self._environ.get('HTTP_COOKIE')
+            #logging.info('-------get HTTP_COOKIE------')
             if cookie_str:
                 for c in cookie_str.split(';'):
                     pos = c.find('=')
@@ -1001,6 +1002,7 @@ class Response(object):
         L = [(_RESPONSE_HEADER_DICT.get(k, k), v) for k,v in self._headers.iteritems()]
         if hasattr(self, '_cookies'):
             for v in self._cookies.itervalues():
+                #response:Set-Cookie  <==>  request:HTTP_COOKIE
                 L.append(('Set-Cookie', v))
         L.append(_HEADER_X_POWERED_BY)
         return L
@@ -1308,6 +1310,7 @@ class Jinja2TemplateEngine(TemplateEngine):
         self._env.filters[name] = fn_filter
 
     def __call__(self, path, model):
+        #返回带有dict参数的html页面
         return self._env.get_template(path).render(**model).encode('utf-8')
 
 def _default_error_handler(e, start_response, is_debug):

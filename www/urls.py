@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__author__ = 'Michael Liao'
+__author__ = 'Alex Wang'
 
 import os, re, time, base64, hashlib, logging
 
@@ -44,6 +44,9 @@ def check_admin():
         return
     raise APIPermissionError('No permission.')
 
+'''
+如果url path以'/'开头的话，则要经过该拦截器处理
+'''
 @interceptor('/')
 def user_interceptor(next):
     logging.info('try to bind user from session cookie...')
@@ -57,6 +60,9 @@ def user_interceptor(next):
     ctx.request.user = user
     return next()
 
+'''
+如果url path以'/manage/'开头的话，则要经过该拦截器处理
+'''
 @interceptor('/manage/')
 def manage_interceptor(next):
     user = ctx.request.user
@@ -105,6 +111,7 @@ _RE_MD5 = re.compile(r'^[0-9a-f]{32}$')
 @api
 @post('/api/users')
 def register_user():
+    logging.info('-------register_user()------')
     i = ctx.request.input(name='', email='', password='')
     name = i.name.strip()
     email = i.email.strip().lower()
