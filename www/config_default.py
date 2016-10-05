@@ -17,6 +17,6 @@ configs = {
         'port': 3306,
     },
     'session': {
-        'secert': 'AwEsOmE'
+        'secret': 'AwEsOmE'
     }
 }
