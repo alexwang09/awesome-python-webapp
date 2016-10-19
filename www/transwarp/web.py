@@ -466,7 +466,7 @@ def _to_unicode(s, encoding='utf-8'):
     >>> _to_unicode('\xe4\xb8\xad\xe6\x96\x87') == u'\u4e2d\u6587'
     True
     '''
-    return s.decode(encoding)
+    return s.decode('utf-8')
 
 def _quote(s, encoding='utf-8'):
     '''
@@ -688,6 +688,7 @@ class Request(object):
             return _to_unicode(item.value)
         fs = cgi.FieldStorage(fp=self._environ['wsgi.input'], environ=self._environ, keep_blank_values=True)
         inputs = dict()
+        logging.info('---------%s----------' % fs)
         for key in fs:
             inputs[key] = _convert(fs[key])
         return inputs
@@ -827,11 +828,11 @@ class Request(object):
         '''
         Get raw document_root as str. Return '' if no document_root.
 
-        >>> r = Request({'DOCUMNET_ROOT': '/srv/path/to/doc'})
+        >>> r = Request({'DOCUMENT_ROOT': '/srv/path/to/doc'})
         >>> r.document_root
         '/srv/path/to/doc'
         '''
-        return self._environ.get('DOCUMNET_ROOT', '')
+        return self._environ.get('DOCUMENT_ROOT', '')
 
     @property
     def query_string(self):
@@ -1087,7 +1088,7 @@ class Response(object):
         >>> r.content_length
         '100'
         '''
-        return self.header('CONTENT_LENGTH')
+        return self.header('CONTENT-LENGTH')
 
     @content_length.setter
     def content_length(self, value):
@@ -1102,7 +1103,7 @@ class Response(object):
         >>> r.content_length
         '8192'
         '''
-        self.set_header('CONTENT_LENGTH', str(value))
+        self.set_header('CONTENT-LENGTH', str(value))
 
     def delete_cookie(self, name):
         '''
@@ -1175,7 +1176,7 @@ class Response(object):
     @property
     def status_code(self):
         '''
-        Get resposne status code as int.
+        Get response status code as int.
 
         >>> r = Response()
         >>> r.status_code

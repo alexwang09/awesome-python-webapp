@@ -17,6 +17,7 @@ if __name__ == '__main__':
     db.update(Blog().__sql__())
     db.update(Comment().__sql__())
 
+    '''
     u = User(name='Test', email='test@example.com', password='1234567890', image='about:blank')
 
     u.insert()
@@ -30,3 +31,4 @@ if __name__ == '__main__':
 
     u2 = User.find_first('where email=?', 'test@example.com')
     print 'find user:', u2
+    '''

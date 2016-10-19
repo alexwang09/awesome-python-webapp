@@ -182,13 +182,13 @@ class VersionField(Field):
 
 _triggers = frozenset(['pre_insert', 'pre_update', 'pre_delete'])
 
-def _gen_sql(table_name, mapping):
+def _gen_sql(table_name, mappings):
     """
     类 ==> 表时 生成创建表的sql
     """
     pk = None
     sql = ['-- generating SQL for %s:' % table_name, 'create table `%s` (' % table_name]
-    for f in sorted(mapping.values(), lambda x,y: cmp(x._order, y._order)):
+    for f in sorted(mappings.values(), lambda x,y: cmp(x._order, y._order)):
         if not hasattr(f, 'ddl'):
             raise StandardError('no ddl in field "%s".' % n)
         ddl = f.ddl
@@ -251,7 +251,7 @@ class ModelMetaclass(type):
 
         #check exist if primary key:
         if not primary_key:
-            raise TypeError('primary key not defined in class: %s' % name)
+            raise TypeError('Primary key not defined in class: %s' % name)
         for k in mappings.iterkeys():
             attrs.pop(k)    #从类属性中删除该Field属性，否则，容易造成运行时错误；
         if not '__table__' in attrs:
